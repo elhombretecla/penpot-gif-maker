@@ -5,7 +5,7 @@ import type {
   UiToPlugin,
 } from "./types";
 
-const PLUGIN_TITLE = "Animated Gif Maker";
+const PLUGIN_TITLE = "Penpot Gif Maker";
 
 penpot.ui.open(PLUGIN_TITLE, `?theme=${penpot.theme}`, {
   width: 640,

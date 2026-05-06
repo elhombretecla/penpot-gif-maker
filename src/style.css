@@ -67,6 +67,9 @@ body {
 .field--advanced > .field {
   margin-block-start: var(--spacing-8);
 }
+.field--advanced .field__summary::before {
+  margin-right: var(--spacing-4);
+}
 
 .field__summary {
   cursor: pointer;
