@@ -84,9 +84,18 @@ function composeFrame(
   return out;
 }
 
-// Replace target-color pixels with alpha=0 so they map to the transparent
-// palette entry. A small per-channel tolerance handles compression noise
+// Replace target-color pixels with rgba(0,0,0,0) so they map to the
+// transparent palette entry produced by gifenc when `clearAlpha` is on
+// (the default). A small per-channel tolerance handles compression noise
 // from the PNG export.
+//
+// We must also clear RGB — not just alpha — because gifenc's applyPalette
+// uses euclidean distance in RGBA space. Leaving RGB=255,255,255 with
+// alpha=0 would still map to an opaque white palette entry (alpha distance
+// 65025 < rgb distance 195075), so the GIF would render as solid white
+// even though the palette contains a transparent slot. Snapping to
+// (0,0,0,0) makes the input pixel coincide exactly with the transparent
+// palette entry, which guarantees the right index.
 function knockoutColor(
   rgba: Uint8ClampedArray,
   target: [number, number, number],
@@ -99,6 +108,9 @@ function knockoutColor(
       Math.abs(rgba[i + 1] - tg) <= tolerance &&
       Math.abs(rgba[i + 2] - tb) <= tolerance
     ) {
+      rgba[i] = 0;
+      rgba[i + 1] = 0;
+      rgba[i + 2] = 0;
       rgba[i + 3] = 0;
     }
   }
@@ -173,14 +185,25 @@ export async function buildGif(
     }
 
     const format = targetColor ? "rgba4444" : "rgb444";
-    const palette = quantize(composed, colors, { format });
+    const palette = quantize(composed, colors, {
+      format,
+      // Binary alpha: any palette entry below the threshold collapses to
+      // alpha=0 (transparent), the rest to alpha=255 (opaque). This avoids
+      // intermediate alpha values which GIF cannot represent anyway.
+      oneBitAlpha: targetColor ? true : false,
+      // Snap any near-transparent entry to alpha=0 with RGB=0, matching
+      // the (0,0,0,0) sentinel produced by knockoutColor so applyPalette
+      // maps knocked-out pixels to the transparent slot.
+      clearAlpha: true,
+      clearAlphaThreshold: targetColor ? 64 : 0,
+    });
     const indexed = applyPalette(composed, palette, format);
 
     let transparentIndex = -1;
     if (targetColor) {
       for (let p = 0; p < palette.length; p++) {
         const entry = palette[p];
-        if (entry.length === 4 && entry[3] < 128) {
+        if (entry.length === 4 && entry[3] === 0) {
           transparentIndex = p;
           break;
         }

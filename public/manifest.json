@@ -2,6 +2,6 @@
   "name": "Penpot Gif Maker",
   "code": "plugin.js",
   "description": "Turn selected Penpot boards, groups or layers into an animated GIF.",
-  "icon": "snail.svg",
+  "icon": "icon.png",
   "permissions": ["content:read"]
 }
