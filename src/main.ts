@@ -64,6 +64,9 @@ const elements = {
   previewPlaceholder: $<HTMLDivElement>("[data-role='preview-placeholder']"),
   previewImg: $<HTMLImageElement>("[data-role='preview-img']"),
   previewMeta: $<HTMLDivElement>("[data-role='preview-meta']"),
+  instructionsModal: $<HTMLDialogElement>("[data-role='instructions-modal']"),
+  openInstructionsBtn: $<HTMLButtonElement>("[data-handler='open-instructions']"),
+  closeInstructionsBtn: $<HTMLButtonElement>("[data-handler='close-instructions']"),
 };
 
 // Weights add up to 1. Export tends to dominate in Penpot, encode is next,
@@ -210,6 +213,29 @@ elements.generateBtn.addEventListener("click", () => {
 
 elements.downloadBtn.addEventListener("click", () => {
   void downloadCurrent();
+});
+
+elements.openInstructionsBtn.addEventListener("click", () => {
+  elements.instructionsModal.showModal();
+});
+
+elements.closeInstructionsBtn.addEventListener("click", () => {
+  elements.instructionsModal.close();
+});
+
+// Native <dialog> doesn't close on backdrop click out of the box. The click
+// event still fires on the dialog element when the user clicks outside the
+// inner card, so we use the click coordinates against the dialog rect to
+// detect a backdrop hit.
+elements.instructionsModal.addEventListener("click", (event) => {
+  const dialog = elements.instructionsModal;
+  const rect = dialog.getBoundingClientRect();
+  const inside =
+    event.clientX >= rect.left &&
+    event.clientX <= rect.right &&
+    event.clientY >= rect.top &&
+    event.clientY <= rect.bottom;
+  if (!inside) dialog.close();
 });
 
 window.addEventListener("message", async (event) => {

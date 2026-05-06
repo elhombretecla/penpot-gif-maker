@@ -231,3 +231,162 @@ details[open] > .field__summary::before {
   background-color: rgba(255, 50, 119, 0.15);
   color: var(--error-200);
 }
+
+.app__instructions-link {
+  margin-block-start: auto;
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: var(--font-size-s);
+  color: var(--accent-primary);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.app__instructions-link:hover {
+  text-decoration-thickness: 2px;
+}
+
+.app__instructions-link:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: var(--spacing-4);
+}
+
+.modal {
+  border: none;
+  padding: 0;
+  background: transparent;
+  color: var(--foreground-primary);
+  max-inline-size: min(440px, calc(100vw - var(--spacing-32)));
+  max-block-size: calc(100vh - var(--spacing-32));
+  inline-size: 100%;
+}
+
+.modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.modal__card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--spacing-12);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  max-block-size: calc(100vh - var(--spacing-32));
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-8);
+  padding: var(--spacing-16) var(--spacing-20);
+  border-block-end: 1px solid var(--background-tertiary);
+}
+
+.modal__title {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-bold);
+  color: var(--foreground-primary);
+}
+
+.modal__close {
+  inline-size: var(--spacing-28);
+  block-size: var(--spacing-28);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--spacing-8);
+  color: var(--foreground-secondary);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.modal__close:hover {
+  background-color: var(--background-tertiary);
+  color: var(--foreground-primary);
+}
+
+.modal__close:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 1px;
+}
+
+.modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-20);
+  padding: var(--spacing-20);
+  overflow-y: auto;
+  font-size: var(--font-size-s);
+  line-height: var(--font-line-height-m);
+  color: var(--foreground-secondary);
+}
+
+.modal__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.modal__section-title {
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-bold);
+  color: var(--foreground-primary);
+  margin-block-end: var(--spacing-4);
+}
+
+.modal__section p strong {
+  color: var(--foreground-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.modal__example {
+  margin-block-start: var(--spacing-4);
+  padding: var(--spacing-8) var(--spacing-12);
+  background-color: var(--background-tertiary);
+  border-radius: var(--spacing-8);
+  color: var(--foreground-primary);
+}
+
+.modal__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-block-start: var(--spacing-4);
+  padding: var(--spacing-8) var(--spacing-12);
+  background-color: var(--background-tertiary);
+  border-radius: var(--spacing-8);
+  color: var(--foreground-primary);
+}
+
+.modal__hint {
+  color: var(--foreground-secondary);
+  font-style: italic;
+  margin-block-start: var(--spacing-4);
+}
+
+.modal__body code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.95em;
+  padding: 1px 6px;
+  background-color: var(--background-quaternary);
+  color: var(--accent-primary);
+  border-radius: var(--spacing-4);
+}
+
+.modal__example code,
+.modal__list code {
+  background-color: var(--background-primary);
+}

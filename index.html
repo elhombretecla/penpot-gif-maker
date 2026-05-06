@@ -89,6 +89,14 @@
               </select>
             </div>
           </details>
+
+          <button
+            type="button"
+            class="app__instructions-link body-s"
+            data-handler="open-instructions"
+          >
+            View instructions
+          </button>
         </section>
 
         <div class="app__divider" aria-hidden="true"></div>
@@ -135,6 +143,59 @@
         </section>
       </div>
     </main>
+
+    <dialog class="modal" data-role="instructions-modal" aria-labelledby="instructions-title">
+      <div class="modal__card">
+        <header class="modal__header">
+          <h2 id="instructions-title" class="modal__title">How to use</h2>
+          <button
+            type="button"
+            class="modal__close"
+            data-handler="close-instructions"
+            aria-label="Close instructions"
+          >
+            ×
+          </button>
+        </header>
+
+        <div class="modal__body">
+          <section class="modal__section">
+            <h3 class="modal__section-title">1. Selection order matters</h3>
+            <p>Boards play in the order you select them. Click each layer, group, or board one by one in the desired playback order.</p>
+            <p class="modal__example body-s">
+              <code>frame_1</code> → <code>frame_2</code> → <code>frame_3</code>
+            </p>
+          </section>
+
+          <section class="modal__section">
+            <h3 class="modal__section-title">2. Per-frame delay override</h3>
+            <p>Append <code>:N</code> or <code>:Nms</code> to a layer name to override the global delay for that single frame.</p>
+            <ul class="modal__list">
+              <li><code>intro:500</code> → 500 ms</li>
+              <li><code>pause:1000ms</code> → 1000 ms</li>
+              <li><code>quick</code> → uses the global delay</li>
+            </ul>
+            <p class="modal__hint body-s">Values under 20 ms fall back to the global delay.</p>
+          </section>
+
+          <section class="modal__section">
+            <h3 class="modal__section-title">3. Transparent background</h3>
+            <p>Pick <strong>White</strong> or <strong>Black</strong> in the Background field. Any pixel of that color in your design becomes fully transparent in the output GIF.</p>
+            <p class="modal__hint body-s">Choose a color that doesn't appear inside your artwork — every matching pixel will be knocked out.</p>
+          </section>
+
+          <section class="modal__section">
+            <h3 class="modal__section-title">4. Quality &amp; size</h3>
+            <p>Under <strong>Advanced</strong>, drop the color count (e.g. <code>64</code>) for lighter files. Use <strong>Scale</strong> to export at 0.5×, 1× or 2× the source resolution.</p>
+          </section>
+
+          <section class="modal__section">
+            <h3 class="modal__section-title">5. Saving the GIF</h3>
+            <p>Click <strong>Download Gif</strong> to open the result in a new tab, then save it with your browser (Ctrl/Cmd + S). You can also right-click the preview and pick <em>Save image as…</em></p>
+          </section>
+        </div>
+      </div>
+    </dialog>
 
     <script type="module" src="/src/main.ts"></script>
   </body>
