@@ -1,0 +1,208 @@
+@import "@penpot/plugin-styles/styles.css";
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--background-primary);
+  color: var(--foreground-primary);
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: var(--spacing-16);
+  gap: var(--spacing-12);
+}
+
+.app__notices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.app__notices:empty,
+.app__notices:has([hidden]:only-child) {
+  display: none;
+}
+
+.app__columns {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: var(--spacing-16);
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.app__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  min-width: 0;
+}
+
+.app__column--right {
+  gap: var(--spacing-12);
+}
+
+.app__divider {
+  inline-size: 1px;
+  background-color: var(--background-tertiary);
+  align-self: stretch;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.field__label {
+  color: var(--foreground-secondary);
+}
+
+.field--advanced > .field {
+  margin-block-start: var(--spacing-8);
+}
+
+.field__summary {
+  cursor: pointer;
+  color: var(--foreground-secondary);
+  user-select: none;
+  list-style: none;
+}
+
+.field__summary::marker {
+  display: none;
+}
+
+.field__summary::-webkit-details-marker {
+  display: none;
+}
+
+.field__summary::before {
+  content: "▸ ";
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+
+details[open] > .field__summary::before {
+  transform: rotate(90deg);
+}
+
+.input,
+.select {
+  inline-size: 100%;
+}
+
+.app__generate,
+.app__download {
+  inline-size: 100%;
+  block-size: var(--spacing-40);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: var(--font-size-s);
+  flex-shrink: 0;
+}
+
+.preview {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  min-block-size: 140px;
+  padding: var(--spacing-12);
+  border-radius: var(--spacing-8);
+  background-color: var(--background-tertiary);
+  overflow: hidden;
+}
+
+.preview__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-8);
+  text-align: center;
+  color: var(--foreground-primary);
+}
+
+.preview__placeholder-title {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-bold);
+  color: var(--foreground-primary);
+}
+
+.preview__placeholder-hint {
+  color: var(--foreground-secondary);
+  max-inline-size: 28ch;
+}
+
+.preview__placeholder-hint em {
+  font-style: italic;
+}
+
+.preview__img {
+  max-inline-size: 100%;
+  max-block-size: 100%;
+  border-radius: var(--spacing-4);
+  background-image:
+    linear-gradient(45deg, rgba(0, 0, 0, 0.08) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(0, 0, 0, 0.08) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.08) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.08) 75%);
+  background-size: 12px 12px;
+  background-position:
+    0 0,
+    0 6px,
+    6px -6px,
+    -6px 0;
+}
+
+.preview__meta {
+  position: absolute;
+  inset-block-end: var(--spacing-4);
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  text-align: center;
+  color: var(--foreground-secondary);
+  font-size: var(--font-size-xs);
+  pointer-events: none;
+}
+
+.app__notice {
+  font-size: var(--font-size-s);
+  line-height: var(--font-line-height-m);
+  padding: var(--spacing-8) var(--spacing-12);
+  border-radius: var(--spacing-8);
+}
+
+.app__notice--info {
+  background-color: var(--background-tertiary);
+  color: var(--foreground-secondary);
+}
+
+.app__notice--warning {
+  background-color: var(--warning-50);
+  color: var(--warning-950);
+}
+
+.app__notice--error {
+  background-color: var(--error-50);
+  color: var(--error-700);
+}
+
+[data-theme="dark"] .app__notice--warning {
+  background-color: rgba(254, 72, 17, 0.15);
+  color: var(--warning-50);
+}
+
+[data-theme="dark"] .app__notice--error {
+  background-color: rgba(255, 50, 119, 0.15);
+  color: var(--error-200);
+}

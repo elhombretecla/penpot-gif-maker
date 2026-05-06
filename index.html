@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animated Gif Maker</title>
+  </head>
+  <body data-theme="light">
+    <main class="app">
+      <div class="app__notices">
+        <div
+          class="app__notice app__notice--info"
+          data-role="empty-message"
+          hidden
+        >
+          Select at least one frame, group, or layer to generate a GIF.
+        </div>
+
+        <div
+          class="app__notice app__notice--warning"
+          data-role="single-warning"
+          hidden
+        >
+          Only one item selected — multiple frames are recommended for an animation.
+        </div>
+
+        <div class="app__notice app__notice--error" data-role="error" hidden></div>
+      </div>
+
+      <div class="app__columns">
+        <section class="app__column app__column--left">
+          <div class="field">
+            <label class="field__label body-s" for="delay-input">
+              Frame Delay (ms)
+            </label>
+            <input
+              id="delay-input"
+              class="input"
+              type="number"
+              min="20"
+              step="10"
+              value="100"
+            />
+          </div>
+
+          <div class="field">
+            <label class="field__label body-s" for="transparent-select">
+              Transparent Background?
+            </label>
+            <select id="transparent-select" class="select">
+              <option value="none">No Transparency</option>
+              <option value="white">White (#FFFFFF) is Transparent</option>
+              <option value="black">Black (#000000) is Transparent</option>
+              <option value="peach">Peach (#FB9999) is Transparent</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label body-s" for="loop-select">Loop?</label>
+            <select id="loop-select" class="select">
+              <option value="forever">Forever</option>
+              <option value="once">Play One Time</option>
+            </select>
+          </div>
+
+          <details class="field field--advanced">
+            <summary class="field__summary body-s">Advanced</summary>
+
+            <div class="field">
+              <label class="field__label body-s" for="quality-input">
+                Quality (colors, 2–256)
+              </label>
+              <input
+                id="quality-input"
+                class="input"
+                type="number"
+                min="2"
+                max="256"
+                step="1"
+                value="256"
+              />
+            </div>
+
+            <div class="field">
+              <label class="field__label body-s" for="scale-select">Scale</label>
+              <select id="scale-select" class="select">
+                <option value="1">1x</option>
+                <option value="2">2x</option>
+                <option value="0.5">0.5x</option>
+              </select>
+            </div>
+          </details>
+        </section>
+
+        <div class="app__divider" aria-hidden="true"></div>
+
+        <section class="app__column app__column--right">
+          <button
+            type="button"
+            class="app__generate"
+            data-appearance="secondary"
+            data-handler="generate"
+          >
+            <span data-role="generate-label">Generate GIF</span>
+          </button>
+
+          <div class="preview" data-role="preview">
+            <div class="preview__placeholder" data-role="preview-placeholder">
+              <p class="preview__placeholder-title">Animated GIF preview</p>
+              <p class="preview__placeholder-hint body-s">
+                Tip: you can also right-click the preview and choose
+                <em>Save image as…</em>
+              </p>
+            </div>
+            <img
+              class="preview__img"
+              data-role="preview-img"
+              alt="Animated GIF preview"
+              hidden
+            />
+            <div class="preview__meta body-s" data-role="preview-meta" hidden></div>
+          </div>
+
+          <button
+            type="button"
+            class="app__download"
+            data-appearance="primary"
+            data-handler="download"
+            disabled
+          >
+            Download Gif
+          </button>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
