@@ -28,7 +28,7 @@ function sendSelectionInfo(): void {
 // Per-frame delay can be encoded in the shape name as a trailing
 // `:1234ms` (the `ms` is optional). Returns null if no override is found.
 function parseDelayFromName(name: string): number | null {
-  const match = name.match(/:\s*(\d+)\s*ms?\s*$/i);
+  const match = name.match(/:\s*(\d+)\s*(?:ms)?\s*$/i);
   if (!match) return null;
   const value = Number.parseInt(match[1], 10);
   return Number.isFinite(value) ? value : null;

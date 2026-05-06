@@ -31,7 +31,7 @@ function filenameFromShape(name: string | undefined): string {
   const fallback = "animation.gif";
   if (!name) return fallback;
   const cleaned = name
-    .replace(/:\s*\d+\s*ms?\s*$/i, "")
+    .replace(/:\s*\d+\s*(?:ms)?\s*$/i, "")
     .replace(/[\\/:*?"<>|]+/g, "")
     .replace(/\s+/g, "_")
     .replace(/_+/g, "_")
