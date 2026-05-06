@@ -108,6 +108,28 @@ details[open] > .field__summary::before {
   flex-shrink: 0;
 }
 
+.app__generate {
+  position: relative;
+  overflow: hidden;
+}
+
+.app__progress {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: 3px;
+  display: block;
+  background-color: var(--background-quaternary);
+}
+
+.app__progress-bar {
+  display: block;
+  block-size: 100%;
+  inline-size: 0%;
+  background-color: var(--accent-primary);
+  transition: inline-size 120ms linear;
+}
+
 .preview {
   position: relative;
   display: flex;

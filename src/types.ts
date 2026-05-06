@@ -33,4 +33,5 @@ export type PluginToUi =
       names: string[];
     }
   | { type: "frames"; frames: ExportedFrame[] }
+  | { type: "progress"; phase: "exporting"; current: number; total: number }
   | { type: "error"; message: string };

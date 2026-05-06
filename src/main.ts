@@ -55,6 +55,8 @@ const elements = {
   scaleSelect: $<HTMLSelectElement>("#scale-select"),
   generateBtn: $<HTMLButtonElement>("[data-handler='generate']"),
   generateLabel: $<HTMLSpanElement>("[data-role='generate-label']"),
+  progress: $<HTMLSpanElement>("[data-role='progress']"),
+  progressBar: $<HTMLSpanElement>("[data-role='progress-bar']"),
   downloadBtn: $<HTMLButtonElement>("[data-handler='download']"),
   emptyNotice: $<HTMLDivElement>("[data-role='empty-message']"),
   singleNotice: $<HTMLDivElement>("[data-role='single-warning']"),
@@ -63,6 +65,35 @@ const elements = {
   previewImg: $<HTMLImageElement>("[data-role='preview-img']"),
   previewMeta: $<HTMLDivElement>("[data-role='preview-meta']"),
 };
+
+// Weights add up to 1. Export tends to dominate in Penpot, encode is next,
+// decode is the cheapest. Tweak here if real-world ratios shift.
+const PHASE_WEIGHTS = { exporting: 0.5, decoding: 0.2, encoding: 0.3 } as const;
+type Phase = keyof typeof PHASE_WEIGHTS;
+
+function setProgress(ratio: number): void {
+  const clamped = Math.max(0, Math.min(1, ratio));
+  elements.progressBar.style.inlineSize = `${clamped * 100}%`;
+}
+
+function showProgress(visible: boolean): void {
+  elements.progress.hidden = !visible;
+  setProgress(0);
+}
+
+function applyPhaseProgress(phase: Phase, current: number, total: number): void {
+  if (total <= 0) return;
+  const phaseRatio = current / total;
+  let acc = 0;
+  for (const key of Object.keys(PHASE_WEIGHTS) as Phase[]) {
+    if (key === phase) {
+      acc += PHASE_WEIGHTS[key] * phaseRatio;
+      break;
+    }
+    acc += PHASE_WEIGHTS[key];
+  }
+  setProgress(acc);
+}
 
 function postToPlugin(message: UiToPlugin): void {
   parent.postMessage(message, "*");
@@ -102,6 +133,7 @@ function setGenerating(value: boolean): void {
   state.generating = value;
   elements.generateBtn.disabled = value || state.selectionCount === 0;
   elements.generateLabel.textContent = value ? "Generating…" : "Generate GIF";
+  showProgress(value);
 }
 
 // Wrapping the bytes in a `File` rather than a plain `Blob` makes Chrome use
@@ -197,9 +229,14 @@ window.addEventListener("message", async (event) => {
       state.selectionCount = message.count;
       refreshSelectionState();
       break;
+    case "progress":
+      applyPhaseProgress(message.phase, message.current, message.total);
+      break;
     case "frames": {
       try {
-        const blob = await buildGif(message.frames, readSettings());
+        const blob = await buildGif(message.frames, readSettings(), (phase, current, total) => {
+          applyPhaseProgress(phase, current, total);
+        });
         const filename = filenameFromShape(message.frames[0]?.name);
         showPreview(blob, message.frames.length, filename);
       } catch (err) {

@@ -121,16 +121,30 @@ function loopValue(loop: GifSettings["loop"]): number {
   return loop === "once" ? -1 : 0;
 }
 
+export type GifProgressPhase = "decoding" | "encoding";
+export type GifProgressCallback = (
+  phase: GifProgressPhase,
+  current: number,
+  total: number,
+) => void;
+
+// Yield to the browser so progress UI can repaint between heavy frames.
+function nextTick(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
 export async function buildGif(
   exported: ExportedFrame[],
   settings: GifSettings,
+  onProgress?: GifProgressCallback,
 ): Promise<Blob> {
   if (exported.length === 0) {
     throw new Error("No frames to encode.");
   }
 
   const decoded: DecodedFrame[] = [];
-  for (const f of exported) {
+  for (let i = 0; i < exported.length; i++) {
+    const f = exported[i];
     const { data } = await decodePngToImageData(f.png);
     decoded.push({
       name: f.name,
@@ -139,6 +153,7 @@ export async function buildGif(
       height: data.height,
       delayMs: f.delayMs,
     });
+    onProgress?.("decoding", i + 1, exported.length);
   }
 
   // Snapshot the wrapped frame for later access by index.
@@ -218,6 +233,10 @@ export async function buildGif(
       repeat: i === 0 ? repeat : 0,
       dispose: targetColor ? 2 : -1,
     });
+
+    onProgress?.("encoding", i + 1, frameImages.length);
+    // Yield to the event loop so the progress bar can repaint between frames.
+    await nextTick();
   }
 
   gif.finish();

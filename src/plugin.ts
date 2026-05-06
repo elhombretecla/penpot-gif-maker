@@ -54,7 +54,9 @@ async function exportFrames(settings: GifSettings): Promise<void> {
 
   try {
     const frames: ExportedFrame[] = [];
-    for (const shape of selection) {
+    const total = selection.length;
+    for (let i = 0; i < total; i++) {
+      const shape = selection[i];
       const png = await shape.export({ type: "png", scale });
       const overrideDelay = parseDelayFromName(shape.name);
       const delayMs =
@@ -69,6 +71,7 @@ async function exportFrames(settings: GifSettings): Promise<void> {
         delayMs,
         png,
       });
+      send({ type: "progress", phase: "exporting", current: i + 1, total });
     }
     send({ type: "frames", frames });
   } catch (err) {
