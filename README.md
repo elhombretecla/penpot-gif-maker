@@ -1,7 +1,9 @@
-# Penpot Gif Maker — Penpot Plugin
+# Penpot Gif Maker
 
 A Penpot plugin that turns the current selection (frames, boards, groups, or
 shapes) into an animated GIF. Each selected item becomes one animation frame.
+
+<img width="1497" height="888" alt="cover-plugin" src="https://github.com/user-attachments/assets/56d7c8d6-f6d0-4d91-b23b-3ea1a05c8078" />
 
 ## Requirements
 
