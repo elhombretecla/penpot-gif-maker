@@ -1,6 +1,6 @@
 # Penpot Gif Maker
 
-A Penpot plugin that turns the current selection (frames, boards, groups, or
+A Penpot plugin that turns the current selection (boards, groups, or
 shapes) into an animated GIF. Each selected item becomes one animation frame.
 
 <img width="1497" height="888" alt="cover-plugin" src="https://github.com/user-attachments/assets/56d7c8d6-f6d0-4d91-b23b-3ea1a05c8078" />
@@ -39,7 +39,7 @@ Penpot at `<host>/manifest.json` to install.
 
 1. Lay out the animation as a row of Penpot frames, boards, groups or shapes.
 2. Optionally encode a per-frame delay in the layer name, for example
-   `Frame 9:1000ms`.
+   `Board 9:1000ms`.
 3. Select all of the items (in the order you want them to animate).
 4. Open the plugin and configure:
    - **Frame Delay (ms):** default delay between frames (minimum 20ms).
