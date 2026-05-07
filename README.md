@@ -50,6 +50,8 @@ Penpot at `<host>/manifest.json` to install.
    - **Scale** (advanced): export resolution multiplier.
 5. Click **Generate GIF**, preview the result, then **Download Gif**.
 
+<img width="2956" height="1423" alt="Screenshot from 2026-05-07 08-42-12" src="https://github.com/user-attachments/assets/f4ee339a-dc6b-42c3-912e-a002b8e74f9f" />
+
 ## Architecture
 
 ```
