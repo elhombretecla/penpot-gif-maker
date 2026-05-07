@@ -158,3 +158,7 @@ different content do not bleed colors into each other.
 
 - `npm run dev` — watch build + serve at `http://localhost:4400`.
 - `npm run build` — type-check and produce a static bundle in `dist/`.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
