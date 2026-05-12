@@ -29,6 +29,87 @@ body {
   display: none;
 }
 
+.selection-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  padding: var(--spacing-12);
+  border-radius: var(--spacing-8);
+  background-color: var(--background-tertiary);
+}
+
+.selection-list__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-8);
+}
+
+.selection-list__title {
+  color: var(--foreground-secondary);
+  font-weight: var(--font-weight-bold);
+}
+
+.selection-list__count {
+  color: var(--foreground-secondary);
+}
+
+.selection-list__items {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--spacing-8);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.selection-card {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  padding: var(--spacing-4) var(--spacing-8) var(--spacing-4) var(--spacing-4);
+  border-radius: var(--spacing-8);
+  background-color: var(--background-primary);
+  color: var(--foreground-primary);
+  font-size: var(--font-size-s);
+  line-height: var(--font-line-height-s);
+  flex-shrink: 0;
+  max-inline-size: 14rem;
+}
+
+.selection-card__index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--spacing-20);
+  block-size: var(--spacing-20);
+  padding-inline: 6px;
+  border-radius: var(--spacing-20);
+  background-color: var(--accent-primary);
+  color: var(--background-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.selection-card__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-inline-size: 0;
+}
+
+.selection-card--unnamed .selection-card__name {
+  color: var(--foreground-secondary);
+  font-style: italic;
+}
+
+.selection-list__placeholder {
+  color: var(--foreground-secondary);
+  margin: 0;
+}
+
 .app__columns {
   display: grid;
   grid-template-columns: 1fr 1px 1fr;
@@ -120,17 +201,40 @@ details[open] > .field__summary::before {
   position: absolute;
   inset-inline: 0;
   inset-block-end: 0;
-  block-size: 3px;
+  block-size: 6px;
   display: block;
-  background-color: var(--background-quaternary);
+  background-color: rgba(0, 0, 0, 0.22);
+  overflow: hidden;
 }
 
 .app__progress-bar {
+  position: relative;
   display: block;
   block-size: 100%;
   inline-size: 0%;
   background-color: var(--accent-primary);
   transition: inline-size 120ms linear;
+  overflow: hidden;
+}
+
+.app__progress-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: app-progress-shimmer 1.4s linear infinite;
+}
+
+@keyframes app-progress-shimmer {
+  to {
+    transform: translateX(100%);
+  }
 }
 
 .preview {

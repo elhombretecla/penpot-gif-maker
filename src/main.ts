@@ -13,6 +13,7 @@ document.body.dataset.theme = searchParams.get("theme") ?? "light";
 
 interface UiState {
   selectionCount: number;
+  selectionNames: string[];
   generating: boolean;
   lastGifUrl: string | null;
   lastGifFile: File | null;
@@ -20,6 +21,7 @@ interface UiState {
 
 const state: UiState = {
   selectionCount: 0,
+  selectionNames: [],
   generating: false,
   lastGifUrl: null,
   lastGifFile: null,
@@ -58,7 +60,6 @@ const elements = {
   progress: $<HTMLSpanElement>("[data-role='progress']"),
   progressBar: $<HTMLSpanElement>("[data-role='progress-bar']"),
   downloadBtn: $<HTMLButtonElement>("[data-handler='download']"),
-  emptyNotice: $<HTMLDivElement>("[data-role='empty-message']"),
   singleNotice: $<HTMLDivElement>("[data-role='single-warning']"),
   errorNotice: $<HTMLDivElement>("[data-role='error']"),
   previewPlaceholder: $<HTMLDivElement>("[data-role='preview-placeholder']"),
@@ -67,6 +68,12 @@ const elements = {
   instructionsModal: $<HTMLDialogElement>("[data-role='instructions-modal']"),
   openInstructionsBtn: $<HTMLButtonElement>("[data-handler='open-instructions']"),
   closeInstructionsBtn: $<HTMLButtonElement>("[data-handler='close-instructions']"),
+  selectionList: $<HTMLElement>("[data-role='selection-list']"),
+  selectionListItems: $<HTMLOListElement>("[data-role='selection-list-items']"),
+  selectionListCount: $<HTMLSpanElement>("[data-role='selection-list-count']"),
+  selectionListPlaceholder: $<HTMLParagraphElement>(
+    "[data-role='selection-list-placeholder']",
+  ),
 };
 
 // Weights add up to 1. Export tends to dominate in Penpot, encode is next,
@@ -114,9 +121,52 @@ function setError(message: string | null): void {
 
 function refreshSelectionState(): void {
   const count = state.selectionCount;
-  elements.emptyNotice.hidden = count !== 0;
   elements.singleNotice.hidden = count !== 1;
   elements.generateBtn.disabled = state.generating || count === 0;
+  renderSelectionList();
+}
+
+function renderSelectionList(): void {
+  const names = state.selectionNames;
+  elements.selectionList.hidden = false;
+
+  if (names.length === 0) {
+    elements.selectionListItems.replaceChildren();
+    elements.selectionListItems.hidden = true;
+    elements.selectionListPlaceholder.hidden = false;
+    elements.selectionListCount.textContent = "";
+    return;
+  }
+
+  elements.selectionListItems.hidden = false;
+  elements.selectionListPlaceholder.hidden = true;
+  elements.selectionListCount.textContent = `${names.length} frame${
+    names.length === 1 ? "" : "s"
+  }`;
+
+  const items = names.map((rawName, index) => {
+    const li = document.createElement("li");
+    li.className = "selection-card";
+    const displayName = (rawName ?? "").trim();
+    if (!displayName) li.classList.add("selection-card--unnamed");
+
+    const badge = document.createElement("span");
+    badge.className = "selection-card__index";
+    badge.textContent = String(index + 1);
+    badge.setAttribute("aria-label", `Frame ${index + 1}`);
+
+    const label = document.createElement("span");
+    label.className = "selection-card__name";
+    label.textContent = displayName || "Unnamed";
+
+    li.title = displayName
+      ? `Frame ${index + 1}: ${displayName}`
+      : `Frame ${index + 1} (unnamed)`;
+    li.append(badge, label);
+    return li;
+  });
+
+  elements.selectionListItems.replaceChildren(...items);
 }
 
 function readSettings(): GifSettings {
@@ -135,6 +185,7 @@ function readSettings(): GifSettings {
 function setGenerating(value: boolean): void {
   state.generating = value;
   elements.generateBtn.disabled = value || state.selectionCount === 0;
+  elements.generateBtn.dataset.appearance = value ? "secondary" : "primary";
   elements.generateLabel.textContent = value ? "Generating…" : "Generate GIF";
   showProgress(value);
 }
@@ -253,6 +304,7 @@ window.addEventListener("message", async (event) => {
       break;
     case "selection":
       state.selectionCount = message.count;
+      state.selectionNames = message.names ?? [];
       refreshSelectionState();
       break;
     case "progress":

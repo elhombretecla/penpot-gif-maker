@@ -9,14 +9,6 @@
     <main class="app">
       <div class="app__notices">
         <div
-          class="app__notice app__notice--info"
-          data-role="empty-message"
-          hidden
-        >
-          Select at least one frame, group, or layer to generate a GIF.
-        </div>
-
-        <div
           class="app__notice app__notice--warning"
           data-role="single-warning"
           hidden
@@ -26,6 +18,28 @@
 
         <div class="app__notice app__notice--error" data-role="error" hidden></div>
       </div>
+
+      <section
+        class="selection-list"
+        data-role="selection-list"
+        aria-label="Selected frames in playback order"
+      >
+        <header class="selection-list__header">
+          <span class="selection-list__title body-s">Frame order</span>
+          <span
+            class="selection-list__count body-s"
+            data-role="selection-list-count"
+          ></span>
+        </header>
+        <ol class="selection-list__items" data-role="selection-list-items"></ol>
+        <p
+          class="selection-list__placeholder body-s"
+          data-role="selection-list-placeholder"
+          hidden
+        >
+          Select at least one frame, group, or layer to generate a GIF.
+        </p>
+      </section>
 
       <div class="app__columns">
         <section class="app__column app__column--left">
@@ -105,7 +119,7 @@
           <button
             type="button"
             class="app__generate"
-            data-appearance="secondary"
+            data-appearance="primary"
             data-handler="generate"
           >
             <span data-role="generate-label">Generate GIF</span>
